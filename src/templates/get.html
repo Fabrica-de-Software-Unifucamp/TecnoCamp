@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Dados</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Lista de Usuários</h2>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Endereço</th>
+                <th>CPF</th>
+                <th>Data de Nascimento</th>
+                <th>Telefone</th>
+                <th>Escola</th>
+            </tr>
+        </thead>
+        <tbody id="usuarios-list">
+            <!-- Os dados dos usuários serão carregados aqui via JavaScript -->
+        </tbody>
+    </table>
+
+    <script>
+        // Função para buscar os dados via API e preencher a tabela
+        fetch('http://192.168.10.149:9090/index.php')
+            .then(response => response.json())
+            .then(data => {
+                const usuariosList = document.getElementById('usuarios-list');
+                data.forEach(usuario => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${usuario.id}</td>
+                        <td>${usuario.nome}</td>
+                        <td>${usuario.email}</td>
+                        <td>${usuario.endereco}</td>
+                        <td>${usuario.cpf}</td>
+                        <td>${usuario.data_nascimento}</td>
+                        <td>${usuario.telefone}</td>
+                        <td>${usuario.escola}</td>
+                    `;
+                    usuariosList.appendChild(row);
+                });
+            })
+            .catch(error => {
+                console.error('Erro ao carregar os dados:', error);
+            });
+    </script>
+
+</body>
+</html>
